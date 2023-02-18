@@ -1,0 +1,41 @@
+{
+    "name": "raviyatechnical/laravel-api-generator",
+    "description": "Generate Laravel API",
+    "keywords": [
+        "generator",
+        "php",
+        "cli",
+        "laravel",
+        "artisan",
+        "api",
+        "api-controller",
+        "controller",
+        "pattern"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bhargav Raviya",
+            "email": "raviyatechnical@gmail.com",
+            "homepage": "https://github.com/bhargavraviya",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "RaviyaTechnical\\APIGenerator\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RaviyaTechnical\\APIGenerator\\APIGeneratorServiceProvider"
+            ]
+        }
+    },
+    "support": {
+        "email": "raviyatechnical@gmail.com"
+    }
+}
