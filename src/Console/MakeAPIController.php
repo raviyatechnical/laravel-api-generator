@@ -11,7 +11,7 @@ class MakeAPIController extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:api-controller {name} {--api}';
+    protected $signature = 'api:controller {name} {--api}';
 
     /**
      * The console command description.

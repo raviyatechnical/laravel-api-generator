@@ -10,7 +10,10 @@
         "api",
         "api-controller",
         "controller",
-        "pattern"
+        "pattern",
+        "laravel",
+        "laravel api response",
+        "laravel api response helpers"
     ],
     "type": "library",
     "license": "MIT",
@@ -27,6 +30,14 @@
             "RaviyaTechnical\\APIGenerator\\": "src/"
         }
     },
+    "support": {
+        "email": "raviyatechnical@gmail.com"
+    },
+    "require": {
+        "php": "^7.4 | ^8.0",
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
+        "ext-json": "*"
+    },
     "minimum-stability": "dev",
     "extra": {
         "laravel": {
@@ -34,8 +45,5 @@
                 "RaviyaTechnical\\APIGenerator\\APIGeneratorServiceProvider"
             ]
         }
-    },
-    "support": {
-        "email": "raviyatechnical@gmail.com"
     }
 }
