@@ -17,7 +17,22 @@ composer require raviyatechnical/laravel-api-generator:dev-master --dev
 ## Usage
 For usage take the following steps. Generate the api controller and base controller.
 
-### Generating BaseController
+### Generating BaseController With Auth
+WARNING make you sure that file not exits it is overwrite file
+
+Run the following command.
+```
+php artisan api:install --auth
+```
+This will generate the following files:
+
+```
+App\Http\Controllers\API\BaseController
+App\Http\Controllers\API\Auth\LoginController.php
+App\Http\Controllers\API\Auth\RegisterController.php
+```
+
+### Generating BaseController Without Auth
 WARNING make you sure that file not exits it is overwrite file
 
 Run the following command.

@@ -12,7 +12,7 @@ class InstallAPI extends Command
      *
      * @var string
      */
-    protected $signature = 'api:install';
+    protected $signature = 'api:install { --auth : Install authentication API scaffolding }';
     /**
      * The console command description.
      *
@@ -29,13 +29,15 @@ class InstallAPI extends Command
     {
         $this->info('Installing API Generator...');
         $this->publishBaseController();
+        if ($this->option('auth')) {
+            $this->publishAuthController();
+        }
         $this->info('Installed API Generator');
     }
 
-
     private function publishBaseController()
     {
-        // Create the API directory
+        // Create and check the API directory
         $apiPath = app_path('Http/Controllers/API');
         if (!File::exists($apiPath)) {
             File::makeDirectory($apiPath);
@@ -45,7 +47,6 @@ class InstallAPI extends Command
 
         $namespace = $this->laravel->getNamespace() . 'Http\Controllers\API';
         $rootNamespace = $this->laravel->getNamespace();
-
         $stub = str_replace('{{ namespace }}', $namespace, $stub);
         $stub = str_replace('{{ rootNamespace }}', $rootNamespace, $stub);
 
@@ -54,7 +55,41 @@ class InstallAPI extends Command
         if (!File::exists($apiControllerPath)) {
             // File::copy($this->getStub(), $apiControllerPath);
             File::put($apiControllerPath, $stub);
+        }        
+    }
+
+    private function publishAuthController()
+    {
+        // Create and check the API directory
+        $apiPath = app_path('Http/Controllers/API/Auth');
+        if (!File::exists($apiPath)) {
+            File::makeDirectory($apiPath);
         }
+        // Login File
+        $stub = File::get($this->getLoginStub());
+        $namespace = $this->laravel->getNamespace() . 'Http\Controllers\API\Auth';
+        $rootNamespace = $this->laravel->getNamespace();
+        $stub = str_replace('{{ namespace }}', $namespace, $stub);
+        $stub = str_replace('{{ rootNamespace }}', $rootNamespace, $stub);
+
+        // Copy the base controller stub file to the API directory
+        $apiLoginControllerPath = $apiPath . '/LoginController.php';
+        if (!File::exists($apiLoginControllerPath)) {
+            File::put($apiLoginControllerPath, $stub);
+        }
+        $this->info('Created API Login Controller');
+        // Register
+        $stub = File::get($this->getRegisterStub());
+        $namespace = $this->laravel->getNamespace() . 'Http\Controllers\API\Auth';
+        $rootNamespace = $this->laravel->getNamespace();
+        $stub = str_replace('{{ namespace }}', $namespace, $stub);
+        $stub = str_replace('{{ rootNamespace }}', $rootNamespace, $stub);
+
+        $apiRegisterControllerPath = $apiPath . '/RegisterController.php';
+        if (!File::exists($apiRegisterControllerPath)) {
+            File::put($apiRegisterControllerPath, $stub);
+        }
+        $this->info('Created API Register Controller');
     }
 
     /**
@@ -65,5 +100,25 @@ class InstallAPI extends Command
     protected function getStub()
     {
         return __DIR__ . '/../../stubs/basecontroller.stub';
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getLoginStub()
+    {
+        return __DIR__ . '/../../stubs/Auth/LoginController.stub';
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getRegisterStub()
+    {
+        return __DIR__ . '/../../stubs/Auth/RegisterController.stub';
     }
 }
