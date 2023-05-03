@@ -61,9 +61,10 @@ class InstallAPI extends Command
     private function publishAuthController()
     {
         // Create and check the API directory
-        $apiPath = app_path('Http/Controllers/API/Auth');
-        if (!File::exists($apiPath)) {
-            File::makeDirectory($apiPath);
+        $apiAuthPath = app_path('Http/Controllers/API/Auth');
+        $apiAuthResourcePath = app_path('Http/Resources');
+        if (!File::exists($apiAuthPath)) {
+            File::makeDirectory($apiAuthPath);
         }
         // Login File
         $stub = File::get($this->getLoginStub());
@@ -73,23 +74,34 @@ class InstallAPI extends Command
         $stub = str_replace('{{ rootNamespace }}', $rootNamespace, $stub);
 
         // Copy the base controller stub file to the API directory
-        $apiLoginControllerPath = $apiPath . '/LoginController.php';
+        $apiLoginControllerPath = $apiAuthPath . '/LoginController.php';
         if (!File::exists($apiLoginControllerPath)) {
             File::put($apiLoginControllerPath, $stub);
         }
         $this->info('Created API Login Controller');
-        // Register
+        // Register File
         $stub = File::get($this->getRegisterStub());
         $namespace = $this->laravel->getNamespace() . 'Http\Controllers\API\Auth';
         $rootNamespace = $this->laravel->getNamespace();
         $stub = str_replace('{{ namespace }}', $namespace, $stub);
         $stub = str_replace('{{ rootNamespace }}', $rootNamespace, $stub);
 
-        $apiRegisterControllerPath = $apiPath . '/RegisterController.php';
+        $apiRegisterControllerPath = $apiAuthPath . '/RegisterController.php';
         if (!File::exists($apiRegisterControllerPath)) {
             File::put($apiRegisterControllerPath, $stub);
         }
         $this->info('Created API Register Controller');
+
+        // Register File
+        $stub = File::get($this->getAuthResourceStub());
+        $namespace = $this->laravel->getNamespace() . 'Http\Resources';
+        $stub = str_replace('{{ namespace }}', $namespace, $stub);
+
+        $apiAuthResourcePath = $apiAuthResourcePath . '/AuthResource.php';
+        if (!File::exists($apiAuthResourcePath)) {
+            File::put($apiAuthResourcePath, $stub);
+        }
+        $this->info('Created API Auth Resource');
     }
 
     /**
@@ -120,5 +132,15 @@ class InstallAPI extends Command
     protected function getRegisterStub()
     {
         return __DIR__ . '/../../stubs/Auth/RegisterController.stub';
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getAuthResourceStub()
+    {
+        return __DIR__ . '/../../stubs/Resources/AuthResource.stub';
     }
 }

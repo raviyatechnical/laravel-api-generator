@@ -4,12 +4,9 @@ namespace {{ namespace }};
 
 use {{ rootNamespace }}Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use RaviyaTechnical\APIGenerator\Traits\ApiResponseHelpers;
 
 class BaseController extends Controller
 {
-    use ApiResponseHelpers;
-    /*
     public function sendResponse($result, $message,$status_code = 200)
     {
     	$response = [
@@ -29,6 +26,5 @@ class BaseController extends Controller
             $response['data'] = $errorMessages;
         }
         return response()->json($response, $code);
-    }
-    */
+    }    
 }

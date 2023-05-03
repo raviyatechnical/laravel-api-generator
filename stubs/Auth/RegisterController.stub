@@ -6,6 +6,8 @@ use {{ rootNamespace }}Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\AuthResource;
+use App\Models\User;
 
 class RegisterController extends BaseController
 {
@@ -23,13 +25,16 @@ class RegisterController extends BaseController
             'password_confirmation' => 'required|same:password',
         ]);
         if ($validator->fails()) {
-            return $this->respondWithErrors($validator->errors());
+            return $this->sendError("Validation Error.",$validator->errors());
         }
         $input = $request->only(['name', 'email', 'password']);
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('MyApp')->plainTextToken;
-        $success['name'] =  $user->name;
-        return $this->respondWithSuccess($success);
+        // Without Reource 
+        // $response['token'] =  $user->createToken('MyApp')->plainTextToken;
+        // $response['name'] =  $user->name;
+        // Using Resource 
+        $response =  new AuthResource($user);
+        return $this->sendResponse($response,"User login succussfully");
     }
 }
