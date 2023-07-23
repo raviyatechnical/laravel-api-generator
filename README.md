@@ -33,6 +33,18 @@ App\Http\Controllers\API\Auth\RegisterController.php
 App\Http\Resources\AuthResource.php
 ```
 
+Add Route On This Path: routes/web.php 
+```
+use App\Http\Controllers\API\Auth\LoginController;
+use App\Http\Controllers\API\Auth\RegisterController;
+...
+Route::post('register', [RegisterController::class, 'register'])->name('auth.register');
+Route::post('login', [LoginController::class, 'login'])->name('auth.login');
+Route::post('logout', [LoginController::class, 'logout'])->name('auth.logout')->middleware('auth:sanctum');
+Route::post('logout-all', [LoginController::class, 'logoutAll'])->name('auth.logout.all')->middleware('auth:sanctum');
+```
+
+
 ### Generating BaseController Without Auth
 WARNING make you sure that file not exits it is overwrite file
 
