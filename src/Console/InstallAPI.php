@@ -63,8 +63,12 @@ class InstallAPI extends Command
         // Create and check the API directory
         $apiAuthPath = app_path('Http/Controllers/API/Auth');
         $apiAuthResourcePath = app_path('Http/Resources');
+
         if (!File::exists($apiAuthPath)) {
             File::makeDirectory($apiAuthPath);
+        }
+        if (!File::exists($apiAuthResourcePath)) {
+            File::makeDirectory($apiAuthResourcePath);
         }
         // Login File
         $stub = File::get($this->getLoginStub());

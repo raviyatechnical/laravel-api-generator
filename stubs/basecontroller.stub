@@ -4,6 +4,7 @@ namespace {{ namespace }};
 
 use {{ rootNamespace }}Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BaseController extends Controller
 {
@@ -26,5 +27,12 @@ class BaseController extends Controller
             $response['data'] = $errorMessages;
         }
         return response()->json($response, $code);
-    }    
+    }
+
+    public function errorLog($exception, $dump = true) {
+        if(config('app.debug')){
+            dd($exception);
+        }
+        Log::error($exception->getMessage());
+    }
 }
