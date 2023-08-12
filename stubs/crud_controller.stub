@@ -2,12 +2,12 @@
 
 namespace {{ namespace }};
 
-use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ rootNamespace }}Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
-class {{ class }} extends Controller
+class {{ class }} extends BaseController
 {
     public $model;
 
@@ -45,9 +45,10 @@ class {{ class }} extends Controller
             'detail' => 'required'
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),422);
         }
         try {
+            // $validated = $request->validated();
             $record =  $this->model->create($input);
             return $this->sendResponse($record, 'Record created successfully.');
         } catch (\Exception $e) {
@@ -87,21 +88,21 @@ class {{ class }} extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $input = $request->all();
         $validator = Validator::make($input, [
             'name' => 'required',
             'detail' => 'required'
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),422);
         }
         try {
-            $record = $this->model->find($id);
+            $record = $this->model->findOrFail($id);
             if ($record) {
                 $record->update($input);
             }
-            return $this->sendResponse($record, 'Record updated successfully.');
+            $newRecord = $this->model->find($id);
+            return $this->sendResponse($newRecord, 'Record updated successfully.');
         } catch (\Exception $e) {
             $this->errorLog($e);
             return $this->sendError('Something went wrong.', (object) []);

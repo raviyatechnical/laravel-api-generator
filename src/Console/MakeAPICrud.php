@@ -11,7 +11,7 @@ class MakeAPICrud extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'api:crud {name} {--api}';
+    protected $signature = 'api:crud {name}';
 
     /**
      * The console command description.

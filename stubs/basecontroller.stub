@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Log;
 
 class BaseController extends Controller
 {
+    public function response($success, $data, $message, $code = 200)
+    {
+        $response = array(
+            'success' => $success,
+            'message' => $message,
+            'data' => $data,
+        );
+        return response()->json($response, $code);
+    }
+    
     public function sendResponse($result, $message,$status_code = 200)
     {
     	$response = [
@@ -29,10 +39,10 @@ class BaseController extends Controller
         return response()->json($response, $code);
     }
 
-    public function errorLog($exception, $dump = true) {
+    public function errorLog($e) {
+        Log::error(json_encode($e));
         if(config('app.debug')){
-            dd($exception);
+            dd($e);
         }
-        Log::error($exception->getMessage());
     }
 }
